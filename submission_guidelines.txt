@@ -1,0 +1,8 @@
+Instructions
+The following instructions apply to all assignments in the course. Make sure you follow them, this paragraph will not be repeated on each assignment, but the rules will apply to all assignments. This is your first and final warning.
+
+1- Make sure to upload your work as a zip file (no other format). I can only open zip files, if it is another format, I will not be able to open it and your score will be zero.
+2- For each section make sure you upload at least one picture showing your output of the working code (you may upload more if you feel you need to do that).
+3- Make sure you do not upload the node_modules folder. You lose 1 point per day after the course start for forgetting it. For example, on day 5 if you still have "node_modules" folder you lose 5 points from your assignment score (yes, it could result in a negative grade).
+4- The images are uploaded separately from the zip file (not inside the zip file). Your submission should be some images and zip files (zip files for code).
+5-Screen shot formats are either JPG or PNG. Again, other formats will be considered none visible and result in zero.
