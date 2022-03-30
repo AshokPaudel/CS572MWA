@@ -10,6 +10,6 @@ const fibonacci = function(number){
     }
 
 }
-console.log("fibonacci of 30 : "+fibonacci(30));
-console.log("fibonacci of -15 : "+fibonacci(-15));
+// console.log("fibonacci of 30 : "+fibonacci(30));
+// console.log("fibonacci of -15 : "+fibonacci(-15));
 module.exports = fibonacci;
