@@ -8,7 +8,7 @@ app.use(function(req, res, next) {
     next();
 })
 
-app.use("*",sumRoute);
+app.use("",sumRoute);
 
 const server = app.listen(process.env.PORT, function (){
     console.log(process.env.MSG_SERVER_START, server.address().port);
