@@ -1,0 +1,14 @@
+[
+    {
+        "name": "john",
+        "gpa": 3.3
+    },
+    {
+        "name": "James",
+        "gpa": 2.5
+    },
+    {
+        "name": "Jasmin",
+        "gpa": 3.8
+    }
+]
