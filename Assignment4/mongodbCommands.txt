@@ -1,0 +1,9 @@
+1. Create DB and collections, data
+
+ use SchoolDB
+db.createCollection("students");
+db.students.insertMany([{name:"John",GPA:3.1},{name:"James",GPA:2.8},{name:"Jasmin",GPA:3.5}]);
+
+2. Export data
+
+mongoexport --db SchoolDB --collection students --out .\jasonData\student-list.json --jsonArray --pretty
