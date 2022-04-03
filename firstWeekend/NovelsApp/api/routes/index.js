@@ -2,11 +2,9 @@ const express = require("express");
 const routes = express.Router();
 const novelController = require("../controller/novel.controller");
 const authorController = require("../controller/author.controller");
-const { route } = require("express/lib/application");
 routes.route("/novel")
     .get(novelController.getAll)
     .post(novelController.addOne);
-
 
 routes.route("/novel/:novelId")
     .get(novelController.getOne)
@@ -19,8 +17,8 @@ routes.route("/novel/:novelId/authors")
 
 routes.route("/novel/:novelId/authors/:authorId")
     .get(authorController.getOne)
-    // .delete(authorController.deleteOne)
-    // .put(authorController.updateOne);
+    .delete(authorController.deleteOne)
+    .put(authorController.updateOne);
 
 module.exports = routes;
 
