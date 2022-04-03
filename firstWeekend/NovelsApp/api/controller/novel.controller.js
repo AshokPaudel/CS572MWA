@@ -19,21 +19,36 @@ const getAll = function (req, res) {
     console.log(`offset = ${offset} count = ${count}`);
     if (isNaN(offset) || isNaN(count)) {
         console.log("offset or number is not a number");
-        res.status = 400;
-        res.message = "offset and count must be digits";
+        response.status = 400;
+        response.message = "offset and count must be digits";
     }
     if (count > maxCount) {
         console.log("count is greater than max");
-        res.status = 400;
-        res.message = "count must be less than ";
+        response.status = 400;
+        response.message = "count must not be great than " +maxCount;
     }
     if (response.status != 200) {
-        res.status(response.status).json(response.message);
+        return res.status(response.status).json(response.message);
     } else {
         Novel.find().limit(count).exec(function (err, data) {
             console.log("Novel data received from db ", data);
-            res.status(200).json({ "message": data });
+            if(err){
+                response.status=500;
+                response.message="Error fetching data";
+                // res.status(500).status({"message":"Error fetching data"})
+            }else if(!data){
+                res.status=404;
+                res.message="Data doesn't exist";
+                res.status(404).json({"message":"Data doesn't exist"});
+            }else{
+                console.log("Novel data received from db ", data);
+                // res.status(200).json({ "message": data });
+                response.status=200;
+                response.message=data;
+            }
+            res.status(response.status).json(response.message);
         });
+       
     }
 };
 

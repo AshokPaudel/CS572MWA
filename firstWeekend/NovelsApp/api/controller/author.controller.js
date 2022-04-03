@@ -11,12 +11,21 @@ const getAuthors = function (req, res) {
     }
     Novel.findById(novelId).select("authors").exec(function (err, authors) {
         console.log("fetched authors : ", authors);
+        const response = { status: 200, message: authors };
         if (err) {
             console.log("error fetching authors ", err);
-            return res.status(404).json({ "message": "Error finding authors" });
-        } else {
-            return res.status(200).json(authors);
+            response.status=400;
+            response.message="Error finding authors";
+            // return res.status(404).json({ "message": "Error finding authors" });
+        }else if(!authors){
+            response.status = 404;
+            response.message = "Author doesn't exist for the given novelId";
+            console.log("author doesn't exist for the id", novelId);
         }
+        //  else {
+        //     return res.status(200).json(authors);
+        // }
+        return res.status(response.status).json(response.message);
     })
 };
 const addOneAuthor = function (req, res) {
@@ -74,6 +83,10 @@ const _saveNovel = function (res, novel) {
 const _updateAuthor = function (req, res, novel) {
     console.log("At _updateAuthor Novel : ", novel)
     const authorId = req.params.authorId;
+    if(!novel.authors.id(authorId)){
+        console.log("author doesn't exist");
+        return res.status(404).json({"message" : "author not found for given author Id"});
+    }
     if (!req.body.name) {
         console.log("new author doesn't contains name");
         return res.status(400).json({ message: "Author name is required" });
@@ -93,8 +106,11 @@ const _updateAuthor = function (req, res, novel) {
 const _deleteAuthor = function (req, res, novel, authorId) {
     console.log("At deleteAuthor novel is :", novel);
     console.log("Author ID to remove ", authorId);
+    if(!novel.authors.id(authorId)){
+        console.log("author doesn't exist");
+        return res.status(404).json({"message" : "author not found for given author Id"});
+    }
     novel.authors = novel.authors.filter(author => author._id != authorId);
-    // console.log("filtered author ",novel.authors.filter(author => author._id != authorId));
     _saveNovel(res, novel);
 
 }
@@ -107,15 +123,34 @@ const getOne = function (req, res) {
         console.log("invalid  novel or author");
         return res.status(404).json({ "message": "Please provide valid id for novel and author" });
     }
-    Novel.findById(novelId).select("authors").then(novel => {
-        const foundAuthor = novel.authors.filter(author => author._id == authorId);
-        if (!foundAuthor) return res.status(404).json({ "message": "not found" });
-        else res.status(200).json(foundAuthor)
-    }, error => {
-        res.status(500).json({
-            error: error
-        });
+    const response = {status:200,message:"default message"};
+    Novel.findById(novelId).select("authors").exec( function(err,novel) {
+       
+        if (err){
+            response.status=500;
+            response.message="Something went wrong";
+            console.log("error finding author ", error);
+        }else {
+         if(novel) {
+            console.log("found novel");
+            if(novel.authors.id(authorId)){
+                console.log("found Author Id");
+                response.message=novel.authors.id(authorId);
+            }else{
+                response.status=404;
+                response.message="Author not found for given Id";
+                console.log("Author not found for given Id");
+            }
+            
+        }else{
+            console.log("Novel not found for given Id");
+            response.status=404;
+            response.message="Novel not found for given Id";
+        }
+    }
+    res.status(response.status).json(response.message);
     });
+   
 }
 
 const deleteOne = function (req, res) {
