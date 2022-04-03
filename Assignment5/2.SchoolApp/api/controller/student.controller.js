@@ -12,8 +12,8 @@ const getOneStudent = function(req,res){
     console.log("One student requested");
     const studentId = req.params.studentId;
     console.log("studentId=", studentId);
-  
-    Student.find({studentId:studentId}).exec(function(err, data){
+    Student.findOne({studentId: studentId}, function(err, data){
+        // Student.findOne({_id: '6247c64c57ca1f91a9749235'}, function(err, data){
         console.log( "Student found ", data,err);
         res.status(200).json(data);
     });
