@@ -1,0 +1,9 @@
+<p>games works!</p>
+<ul>
+  <li *ngFor="let game of games">
+    <a routerLink="/game/{{game._id}}">
+      {{game.title}}
+    </a>
+    <app-delete></app-delete>
+  </li>
+</ul>
