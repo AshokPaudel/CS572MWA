@@ -1,0 +1,11 @@
+<h1>{{student.name}}</h1>
+
+
+<div>
+
+  Student ID: {{student.studentId}} <br>
+  <ul>
+    Courses :{{student.courses |json}}
+    <li *ngFor = "let course of student.courses">{{course.courseName}} {{course.courseId}} </li>
+  </ul>
+</div>

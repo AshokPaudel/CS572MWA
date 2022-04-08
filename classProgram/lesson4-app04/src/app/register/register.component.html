@@ -1,0 +1,29 @@
+<p>register works!</p>
+
+<form action="" [formGroup]="registrationForm" (ngSubmit)="register(registrationForm)">
+  <div>
+    <label for="">
+      Name:
+      <input formControlName="name" type="text" placeholder="Your Name">
+    </label>
+  </div>
+  <div>
+    <label for="">
+      Userame:
+      <input formControlName="username" type="text" placeholder="User Name">
+    </label>
+  </div>
+  <div>
+    <label for="">
+      Password
+      <input formControlName="password" type="password" placeholder=" password">
+    </label>
+  </div>
+  <div>
+    <label for="">
+      Repeat Password:
+      <input formControlName="repeatPassword" type="password" placeholder="Repeat password">
+    </label>
+  </div>
+  <button type="submit"> Register </button>
+</form>
