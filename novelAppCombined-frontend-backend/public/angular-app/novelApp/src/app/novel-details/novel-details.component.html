@@ -1,0 +1,24 @@
+<div class="container-fluid">
+  <div class="row">
+<p> Novel Details</p>
+
+<ul *ngIf="novel">
+  <li>Title : {{novel.title}}</li>
+  <li>Number of Pages : {{novel.numberOfPages}}</li>
+  <li>Authors:</li>
+  <div *ngFor="let author of novel.authors">
+    <ul>
+      <li>
+        {{ author.name}} , {{author.country}}
+      </li>
+    </ul>
+  </div>
+</ul>
+</div>
+<div class="btn-group">
+<button class="btn btn-warning" (click)="onDelete()">Delete Novel</button>
+
+<button class="btn btn-primary" routerLink="/novelEdit/{{novelId}}">Edit Novel</button>
+
+</div>
+</div>

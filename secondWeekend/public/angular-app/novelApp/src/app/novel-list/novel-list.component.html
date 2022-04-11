@@ -1,0 +1,12 @@
+<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" [(ngModel)]="novelSearch">
+
+<h2>These are the list of Novels we have</h2>
+<p> Click the novel to view and edit the novel</p>
+<!-- {{novels |json}} -->
+<ul>
+   <li *ngFor = "let novel of novels | filter:novelSearch">
+     <a routerLink="/novel/{{novel._id}}">{{ novel.title}}  </a>
+
+  </li>
+<br/>
+<button class="btn btn-primary" routerLink="/addNovel">  Add New Novel</button>

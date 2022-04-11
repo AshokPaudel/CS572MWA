@@ -1,0 +1,98 @@
+Create New Application
+
+1. ng new myapp --skip-tests=true --skip-git=true --defaults=true
+
+2. create one component this will help
+ng generate component navbar
+
+3.import and import at decoration RouterModule in app app.module.ts
+ 
+app.component.html
+<navbar> : you recently created..(which will be fixed)
+4. <router-outlet><router-outlet> ..Any dynamic web content should be followed using this
+If you don't import RouterModule at 3 it doesn't work.
+
+Once you import RouterModule, then you need to define path,
+RouterModule.forRoot([{path: "path1", component: "component1", },{}])
+
+<footer> : or other static content you want to show
+
+-------------------------------------------------------
+my novel app procedures
+
+generate novelList component
+
+ng generate component novelList
+create Novel class and object in novelList component, when initializes get novels from service(need to create) class
+In tempelate file do *ngFor and list all novels
+
+generate novelData service
+You need to import HttpClient and do dependency injection at novelsDataService.
+If you import a module in any component, you need to import that module in app.module.component(i.e main module)
+
+ng generate service novelsData
+
+--------------------
+
+create component novelDetails to present details of a novel when clicked
+
+-----
+Need to import ActivatedRoute to use current snapshot of the route/url
+
+
+--------------------------------------Add Novel Tempelate Form---------------------------------
+import { FormsModule } from '@angular/forms';//at App Module, also include in declarations in AppModule
+<form #addNovelForm = "ngForm" (ngSubmit)= "addNovel(addNovelForm)"> //addNovel is method in ts file. This ngForm is direcive, cannot be otherwise.
+
+.ts
+--view child this needs to be done in template form, no need in reactive form
+@ViewChild('addNovelForm')
+addNovelForm!: NgForm;
+
+ngOnInit(): void {
+   
+    console.log((this.loginForm));
+    setTimeout(()=>{
+      this.loginForm.setValue(this.credentials);
+    },0);
+
+  }
+
+--------------------------Add Reactive Form-------------------------------
+
+.html
+ <form action="" [formGroup]="registrationForm" (ngSubmit)="register(registrationForm)"> // addNovel is a method in ts file.
+every form input should have name field, this field is mapped to ts file to make formGroup.
+
+.ts import FormBuilder , FormGroup ,FormControl
+registrationForm!:FormGroup;
+--create formgroup in constructor of class
+
+constructor(private formBuilder:FormBuilder){
+    this.registrationForm= this.formBuilder.group({
+      name:"Jack",
+      username:"jack",
+      password:"password",
+      repeatPassword:"repeatPassword"
+    })
+  }
+
+register(registrationForm:FormGroup){
+---Do logic here
+}
+
+
+ Quick Find:
+add novel/register at meanGames: reactive form approach
+edit novel:/ login at meangames:reactive form approach: two way binding
+add author:/ login at meangames: template form approach : one way binding
+
+
+
+Pipes
+
+<p > Date pipes demo : {{today |date }} </p>
+<p > Date pipes demo short : {{today |date:"short" }} </p>
+<p > Date pipes demo medium: {{today |date:"medium" }} </p>
+<p > Date pipes demo long: {{today |date:"long" }} </p>
+<p > Date pipes demo userdefinedFormat: {{today |date:"MM-dd-YYYY (hh:mm:ss)" }} </p>

@@ -1,0 +1,89 @@
+
+
+-----------------Notes----------Backend-----------
+
+---------Frequenly used code Express--------
+
+------require json and urlencode(required to parse body)-----
+
+app.use(express.json());
+app.use(express.urlencoded({extended:true}));
+
+
+---------allow access from frontEnd, Add to backend app.js-----------------
+res.header('Access-Control-Allow-Origin','http://localhost:4200');
+res.header('Access-Control-Allow-Headers','Origin,X-Requested-With,Content-Type,Accept');
+res.header('Access-Control-Allow-Methods','*');
+
+----routes-----
+routes = express.Router()
+
+routes.route("/novels").get(novelController.getAll);
+
+-----------------------------------------DB connection------------------
+const mongoose = require("mongoose");
+mongoose.connect(process.env.DB_URL);
+require("./novel-module");
+
+mongoose.connection.on("connected", function(){
+    console.log("mongoose connected to  ",process.env.DB_NAME);
+});
+
+mongoose.connection.on("error", function(){
+    return console.log("Error connecting to mongoose");
+});
+
+-----model Schema in file you define schema------
+
+mongoose.model(process.env.DB_MODEL,novelSchema,process.env.DB_COLLECTION);
+
+---------API hardening-----------
+
+----------------GeoSearch------------------------------
+---------------------------------------------------------------
+-------Make sure DB has index:----------
+----check indexes in DB---:  db.games.getIndexes()
+
+db.games.createIndex({"publisher.location.coordinates": "2dsphere"});
+
+
+--At schema: --
+
+ location:{
+        type:[Number], //longiude((+)E/W(-)),latitide((-)N/S(+))
+        index:"2dsphere"
+    }
+
+--find from same api get, same method getAll-----
+
+_runGeoQuery = function (req, res, offset, count) {
+    const lng = parseFloat(req.query.lng);
+    const lat = parseFloat(req.query.lat);
+    const distance = parseInt(req.query.distance) || 100000;
+    console.log(lng, lat, distance);
+    const point = { type: "Point", coordinates: { lng, lat } };
+    const query = {
+        "publisher.location.coordinates":
+        {
+            $near:
+            {
+                $geometry: point,
+                $minDistance: 0,
+                $maxDistance: distance
+            }
+        }
+    };
+Game.find(query).exec(function (err, games) {
+        if (err) {
+            console.log("Geo Error");
+            res.status(500).json(err);
+        } else {
+            console.log("Geo results ", games);
+            res.status(200).json(games);
+        }
+
+    })
+}
+
+
+----------------FrontEnd---------------------------------

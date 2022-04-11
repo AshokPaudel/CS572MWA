@@ -1,0 +1,39 @@
+<h1>Game Details</h1>
+<form action="" [formGroup] = "addNewGameForm" (ngSubmit)= addNewGameReq(addNewGameForm)>
+  <div>
+    <label for="">title </label>
+    <input type="text" name="" id="" formControlName="title" required placeholder="game title">
+  </div>
+  <div>
+    <label for="">year </label>
+    <input type="text" name="" id="" formControlName="year"  placeholder="game released year">
+  </div>
+
+  <div>
+    <label for="">rate </label>
+    <input type="number" name="" id="" formControlName="rate"  placeholder="game rating">
+  </div>
+  <div>
+    <label for="">Price </label>
+    <input type="number" name="" id="" formControlName="price"  placeholder="price">
+  </div>
+
+  <div>
+    <label for="">minimum players </label>
+    <input type="number" name="" id="" formControlName="minPlayers"  placeholder="minimum Players">
+  </div>
+  <div>
+    <label for="">maximum players </label>
+    <input type="number" name="" id="" formControlName="maxPlayers"  placeholder="maximum players">
+  </div>
+  <div>
+    <label for="">minimum age </label>
+    <input type="number" name="" id="" formControlName="minAge"  placeholder="min Age">
+  </div>
+  <button type="submit" style="margin-top: 20px;">submit Data</button>
+
+</form>
+
+<div>
+  {{responseMessage |json}}
+</div>

@@ -1,0 +1,44 @@
+Connect to MongoDb Database:
+mongosh
+
+create New DB
+
+use MyDB ;
+
+create collecion inside MyDB;
+
+db.createCollection("mycollection");
+
+db.mycollection.insertOne({name:"ashok",course:"compro"}); //Insert in the form of json object
+
+Insert many
+
+db.mycollection.insertMany([{name:"ashok",course:"mba"},{name:"sanjay":course:"compro"}]); //Insert in the form of array of json object
+
+update:
+db.mycollection.updateOne({name:"ashok"},{$set:{name:{"Anil"}};
+
+db.mycollection.updateOne({name:"ashok"},{$set:{name:{"Anil"}};
+
+
+Export/Import Commands (for single collection using json file)
+
+mongoexport --db meanGames --collection games --out output/games.json --jsonArray --preety
+
+mongoimport --db meanGames2 --collection games2 --jsonArray output\games.json
+
+
+Dump and Restore
+
+command to run in command Prompt
+
+mongodump --db meanGames;
+
+mongorestore --gzip \mydb\ (the folder inside mydb should be dump )
+
+mongorestore (you are in directory that has dump directory inside it and database files inside dump)
+
+If connection failed to mongosh
+net start ::to check the status if mongoosh is started or not
+
+net start mongosh (to start mongosh)

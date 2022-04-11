@@ -1,0 +1,16 @@
+<h2>Add New Author</h2>
+<form #authorAddForm="ngForm" (ngSubmit)="authorAdd(authorAddForm)">
+  <div>
+    <label>Name</label>
+    <input type="text" name="name" ngModel />
+    <label>Country</label>
+    <input type="text" name="country" ngModel />
+    <label for="">
+      <input type="text" name ="_id" ngModel hidden >
+    </label>
+
+  </div>
+  <div>
+    <button type="submit" style="margin: 20px;"> submit</button>
+  </div>
+</form>

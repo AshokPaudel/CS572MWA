@@ -1,0 +1,9 @@
+<ul>
+  <li *ngFor="let game of games">
+    <a routerLink="/game/{{game._id}}">
+      {{game.title}}
+    </a>
+  </li>
+  <br><br>
+  <p> <button routerLink = "/game/addgame">Add New Game</button></p>
+</ul>

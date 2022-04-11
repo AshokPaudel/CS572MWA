@@ -1,0 +1,15 @@
+The requirements are:
+
+1- A data-driven application.
+
+2- Your application has a document and an array of sub-documents (using one collection).
+
+3- Perform CRUD operations on the application's main documents (implement full update).
+
+4- Perform CRUD operations on the application's main sub-documents (implement full update).
+
+5- Make sure you use the proper URL paths and methods to perform CRUD operations as discussed in class.
+
+6- Your application must have API hardening.
+
+This application is due by Sunday night, Make sure you are awake with us on Monday.

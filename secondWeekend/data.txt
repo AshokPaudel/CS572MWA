@@ -8,7 +8,6 @@ Authors{
 	name:
 	country:
 }
-create db: meanNovels
 
 db.novels.insertMany([
 	{ title: "Buddha's Brain- The Practical Neuroscience of Happiness, Love, and Wisdom",numberOfPages:272,
@@ -25,3 +24,14 @@ db.novels.insertMany([
 			]	
 	}
 ])
+
+
+Add New Game:
+
+{
+    "title":"How To get A in MWA",
+    "page":1,
+    "authors":{"name":"Ashok", "country":"Nepal"}
+}
+
+partial update doesn't happen

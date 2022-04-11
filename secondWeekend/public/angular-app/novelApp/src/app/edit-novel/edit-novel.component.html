@@ -1,0 +1,49 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-6">
+<h3>Edit Novel Here</h3>
+
+
+ <form action="" #novelDetailsForm = 'ngForm' (ngSubmit) = onEdit(novelDetailsForm)>
+  <div class="form-group">
+    <label for="title">Title</label>
+    <input type="text" class="form-control" id="title" name="title" placeholder="Enter title of the Novel"
+      ngModel />
+  </div>
+
+  <div class="form-group">
+    <label for="title">Number of pages</label>
+    <input  class="form-control" type="text" name="numberOfPages" placeholder="Number of Pages in Novel" [(ngModel)] =novel.numberOfPages >
+  </div>
+  <div>
+    <br/>
+     Authors
+    <ol>
+      <li *ngFor = "let author of authors">
+        <div class="row">
+        <div class="col-md-6">
+          {{author.name}}, {{author.country}}
+        </div>
+        <div class="col-md-6">
+          <div class="btn-group">
+          <button class="btn btn-primary"   routerLink = "/novelEdit/{{novel._id}}/editAuthor/{{author._id}}" >Edit Author </button>
+          <button class="btn btn-warning" routerLink = "/novelEdit/{{novel._id}}/deleteAuthor/{{author._id}}" >Delete Author </button>
+        </div>
+        </div>
+      </div>
+      <hr>
+      </li>
+    </ol>
+    <button class="btn btn-success"  routerLink = "/novelEdit/{{novel._id}}/addAuthor" >Add New Author </button>
+
+  </div>
+<div>
+  <br/>
+  <button class="btn btn-primary"  type="submit"> Submit</button>
+</div>
+ </form>
+ </div>
+ </div>
+ </div>
+
+
