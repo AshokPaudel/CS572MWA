@@ -42,3 +42,25 @@ If connection failed to mongosh
 net start ::to check the status if mongoosh is started or not
 
 net start mongosh (to start mongosh)
+
+
+
+----Additional commands----
+
+mongoexport --db SchoolDB --collection students  --out output/students.json  //Export as Json
+mongoexport --db CookingDB --collection receipes  --out output/receipes.json --jsonArray --pretty //Export as JsonArry with readable pretty format
+
+IMPORT JSON
+mongoimport --db CookingDB --collection receipes --jsonArray output/receipes.json  //Import as Json
+----------------------------------------------------------------------------------------------------------------------------
+
+EXPORT - BSON
+mongodump --db CookingDB --gzip  //Export as gzip file
+mongodump --db CookingDB  //Export as BSON without gzip file
+
+IMPORT - BSON
+mongorestore --gzip --db meanMovies --drop dump\meanMovies  //Import as gzip BSON file
+mongorestore --db meanMovies --drop dump\meanMovies			//Import as BSON without gzip file
+
+
+
