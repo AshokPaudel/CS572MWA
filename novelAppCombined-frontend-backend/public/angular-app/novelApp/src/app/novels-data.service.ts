@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Author, Novel } from './novel-list/novel-list.component';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -9,11 +10,11 @@ import { Author, Novel } from './novel-list/novel-list.component';
 export class NovelsDataService {
   currentNovel!:Novel;
   constructor(private http:HttpClient) { }
-  baseUrl:string = "http://localhost:3456/api"
+  baseUrl:string = environment.API_URL;
 
   public getNovels():Observable<Novel[]>{
     console.log("I am at getNovels");
-    const url:string= this.baseUrl+"/novel";
+    const url:string= this.baseUrl+"/novels";
     return this.http.get<Novel[]>(url);
 
   }

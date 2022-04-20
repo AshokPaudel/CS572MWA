@@ -22,7 +22,7 @@ const _addAuthorSendResponse = function (req, res, novel, response) {
     novel.authors.push(newAuthor);
     _saveNovelSendResponse(novel, res, response);
 }
-const _saveNovelSendResponse = function ( res, response,novel) {
+const _saveNovelSendResponse = function (res, response, novel) {
     console.log("At _savenovel novel : ");
     novel.save().then((savedNovel) => {
         response.message = savedNovel;
@@ -33,27 +33,27 @@ const _saveNovelSendResponse = function ( res, response,novel) {
     }).finally(() => sendResponse(res, response));
 }
 
-const _updateAuthor = function (req,res, response,novel,authorId) {
+const _updateAuthor = function (req, res, response, novel, authorId) {
     console.log("At _updateAuthor Novel :", " request body", req.body);
     // const authorId = req.params.authorId;
     if (!novel.authors.id(authorId)) {
         console.log("author doesn't exist");
         response.status = parseInt(process.env.RESOURCE_NOT_FOUND_STATUS);
-        response.message= process.env.AUTHOR_NOT_FOUND_BYID_MSG;
+        response.message = process.env.AUTHOR_NOT_FOUND_BYID_MSG;
 
         sendResponse()
-    }else{
+    } else {
         novel.authors =
-        novel.authors.map(author => {
-            if (author._id == authorId) {
-                return { ...req.body, ...author };
-            } return author;
-        });
-    console.log("Update novel authors", novel.authors);
-    _saveNovelSendResponse(res, response, novel);
+            novel.authors.map(author => {
+                if (author._id == authorId) {
+                    return { ...req.body, ...author };
+                } return author;
+            });
+        console.log("Update novel authors", novel.authors);
+        _saveNovelSendResponse(res, response, novel);
 
     }
-    
+
 }
 
 const _deleteAuthor = function (res, response, novel, authorId) {
@@ -89,7 +89,7 @@ const _findNovelAndDeleteAuthor = function (novel, res, response, authorId) {
         _deleteAuthor(res, response, novel, authorId)
     }
 }
-const _findNovelAndUpdateAuthor = function (req, res, response, novel,authorId) {
+const _findNovelAndUpdateAuthor = function (req, res, response, novel, authorId) {
     console.log("At _findNovelAndUpdateAuthor ", novel);
     if (!novel) {
         response.status = parseInt(process.env.RESOURCE_NOT_FOUND_STATUS);
@@ -97,7 +97,7 @@ const _findNovelAndUpdateAuthor = function (req, res, response, novel,authorId) 
         // sendResponse(res,response);
     } else {
         console.log("Novel exists");
-        _updateAuthor(req,res, response, novel, authorId)
+        _updateAuthor(req, res, response, novel, authorId)
     }
 }
 
@@ -105,32 +105,35 @@ const getAuthors = function (req, res) {
     console.log("Get all author request received");
     const novelId = req.params.novelId;
     console.log("novel id = ", novelId);
-    const response = { status: 200, message: "" };
+    const response = { status: parseInt(process.env.OK), message: "" };
     if (!mongoose.isValidObjectId(novelId)) {
         console.log("Invalid novelId");
-        response.status = 400;
-        response.message = "Invalid Novel ID";
+        response.status = parseInt(process.env.INVALID_OBJECT_ID_STATUS);
+        response.message = process.env.INVALID_OBJECT_ID_MSG;
         sendResponse(res, response);
     } else {
         Novel.findById(novelId).select("authors").then((novel) => _returnAuthors(novel, res, response))
-            .catch((error) => _resourceFindFail(error, response))
+            .catch((error) => dataReadWriteInternalError(error, response))
             .finally(() => sendResponse(res, response));
     }
 };
 const addOneAuthor = function (req, res) {
     console.log("Add one auther requested ", req.params, req.body);
     const novelId = req.params.novelId;
-    const response = { status: 200, message: "" };
+    const response = {
+        status: parseInt(process.env.DATA_CREATE_SUCCESS),
+        message: {}
+    };
     if (!mongoose.isValidObjectId(novelId)) {
         console.log("invalid NovelId");
-        response.status = 400;
-        response.message = "Invalid novelId"
+        response.status = parseInt(process.env.INVALID_OBJECT_ID_STATUS);
+        response.message = process.env.INVALID_OBJECT_ID_MSG;
         sendResponse(res, response);
         // return res.status(400).json({ "message": "invalid novel id" });
     } else {
-
-        Novel.findById(novelId).select("authors").then((novel) => _addAuthorSendResponse(req, res, novel, response))
-            .catch((error) => _resourceFindFail(error, response))
+        Novel.findById(novelId).select("authors")
+            .then((novel) => _addAuthorSendResponse(req, res, novel, response))
+            .catch((error) => dataReadWriteInternalError(error, response))
         // .finally(()=>sendResponse(res,response));
     }
 };
@@ -139,7 +142,7 @@ const getOne = function (req, res) {
     console.log("Get one author called");
     const novelId = req.params.novelId;
     const authorId = req.params.authorId;
-    const response = { status: 200, message: "default message" };
+    const response = { status: parseInt(process.env.OK), message: "" };
     if (!(mongoose.isValidObjectId(novelId) && mongoose.isValidObjectId(authorId))) {
         console.log("invalid  novel or author");
         response.status = process.env.INVALID_OBJECT_ID_STATUS;
@@ -150,7 +153,7 @@ const getOne = function (req, res) {
 
         Novel.findById(novelId).select("authors")
             .then((novel) => _returnAuthorById(novel, authorId, res, response))
-            .catch((error) => _resourceFindFail(error, response))
+            .catch((error) => dataReadWriteInternalError(error, response))
             .finally(() => sendResponse(res, response));
     }
 }
@@ -159,7 +162,7 @@ const deleteOne = function (req, res) {
     console.log("delete One Author request received");
     const novelId = req.params.novelId;
     const authorId = req.params.authorId;
-    const response = { status: 200, message: "" };
+    const response = { status: parseInt(process.env.OK), message: "" };
     if (!(mongoose.isValidObjectId(novelId) && mongoose.isValidObjectId(authorId))) {
         console.log("invalid  novel or author");
         response.status = process.env.INVALID_OBJECT_ID_STATUS;
@@ -168,7 +171,7 @@ const deleteOne = function (req, res) {
     }
     else {
         Novel.findById(novelId).select("authors").then((novel) => _findNovelAndDeleteAuthor(novel, res, response, authorId))
-            .catch(error => _resourceFindFail(error, response))
+            .catch(error => dataReadWriteInternalError(error, response))
             .finally(() => sendResponse(res, response));
     }
 
@@ -177,22 +180,25 @@ const updateOne = function (req, res) {
     console.log("update One Author request received");
     const novelId = req.params.novelId;
     const authorId = req.params.authorId;
-    const response = { status: 200, message: "default message" };
+    const response = {
+        status: process.env.DATA_UPDATE_SUCCESS,
+        message: {}
+    };
     if (!(mongoose.isValidObjectId(novelId) && mongoose.isValidObjectId(authorId))) {
         console.log("invalid  novel or author");
         response.status = proces.env.INVALID_OBJECT_ID_STATUS;
         response.message = process.env.INVALID_OBJECT_ID_MSG;
         sendResponse(res, response);
-    }else if(!req.body.name) {
+    } else if (!req.body.name) {
         console.log("new author doesn't contains name");
         response.status = process.env.INVALID_FORM_INPUT_STATUS;
         response.message = process.env.INVALID_FORM_INPUT_MSG;
         sendResponse(res, response);
     }
-     else {
+    else {
         Novel.findById(novelId).select("authors")
-        .then((novel) => _findNovelAndUpdateAuthor(req, res, response,novel, authorId))
-        .catch(error => _resourceFindFail(error, response))
+            .then((novel) => _findNovelAndUpdateAuthor(req, res, response, novel, authorId))
+            .catch(error => dataReadWriteInternalError(error, response))
     }
 }
 

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 mongoose.connect(process.env.DB_URL);
 require("./novel-module");
-
+require("./user-model");
 mongoose.connection.on("connected", function(){
     console.log("mongoose connected to  ",process.env.DB_NAME);
 });

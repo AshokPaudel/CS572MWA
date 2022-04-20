@@ -1,0 +1,27 @@
+<!-- <form #registrationForm="ngForm" (ngSubmit) = "register(registrationForm)"> -->
+<form #registrationForm="ngForm" (ngSubmit)="register(registrationForm)">
+  <div class="form-group mx-sm-3 mb-2">
+    <label>User Name</label>
+     <input type="text" class="form-control" name="username" required placeholder="User name"  #username="ngModel" ngModel>
+     <div *ngIf="username.invalid && (username.dirty || username.touched)" class="alert">
+      <div *ngIf="username.errors?.['required']">
+        User Name is required.
+      </div>
+    </div>
+  </div>
+  <div class="form-group  mx-sm-3 mb-2">
+    <label>Password</label>
+    <input type="password" class="form-control" name="password" placeholder="Password"  #password="ngModel"ngModel>
+  </div>
+  <div class="form-group  mx-sm-3 mb-2">
+    <label>Repeat Password</label>
+    <input type="password" class="form-control" name="repeatPassword" placeholder="RepeatPassword"  #repeatPassword="ngModel" ngModel>
+  </div>
+  <div *ngIf="password!=repeatPassword" class="alert">
+    <div *ngIf="password!=repeatPassword">
+      password and repeat password should match.
+    </div>
+  </div>
+  <button type="submit" class="btn btn-primary  mx-sm-3 mb-2">Submit</button>
+  <button type="reset" class="btn btn-warning  mx-sm-3 mb-2"> Reset</button>
+</form>

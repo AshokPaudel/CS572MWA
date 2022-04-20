@@ -1,4 +1,3 @@
-const { response } = require("express");
 const mongoose = require("mongoose");
 const Novel = mongoose.model(process.env.DB_MODEL);
 

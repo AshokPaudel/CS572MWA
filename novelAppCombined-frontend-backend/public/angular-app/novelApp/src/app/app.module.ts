@@ -20,6 +20,8 @@ import { EditNovelComponent } from './edit-novel/edit-novel.component';
 import { EditAuthorComponent } from './edit-author/edit-author.component';
 import { DeleteAuthorComponent } from './delete-author/delete-author.component';
 import { AddAuthorComponent } from './add-author/add-author.component';
+import { RegistrationComponent } from './registration/registration.component';
+import { LoginComponent } from './login/login.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -32,7 +34,9 @@ import { AddAuthorComponent } from './add-author/add-author.component';
     EditNovelComponent,
     EditAuthorComponent,
     DeleteAuthorComponent,
-    AddAuthorComponent
+    AddAuthorComponent,
+    RegistrationComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -48,6 +52,10 @@ import { AddAuthorComponent } from './add-author/add-author.component';
       {
       path:"",
       component:HomeComponent
+     },
+     {
+      path:"register",
+      component:RegistrationComponent
      },
      {
       path:"novels",

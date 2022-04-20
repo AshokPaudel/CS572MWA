@@ -4,7 +4,9 @@
 
 export const environment = {
   production: false,
-  API_URL: "Configure url at proper files"
+  API_URL: "Configure url at proper files",
+  USER_URL:"user path",
+  USER_LOGIN:"Login Path"
 };
 
 /*
