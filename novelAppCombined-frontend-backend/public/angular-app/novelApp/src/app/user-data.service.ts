@@ -12,12 +12,16 @@ export class UserDataService {
   constructor(private httpClient:HttpClient) { }
 
 
-
   registerUser(credentials:Credentials):Observable<any>{
    const url = environment.API_URL+ environment.USER_URL;
    const header = new HttpHeaders();
    console.log("At register User method of service ");
 
-   return this.httpClient.post<any>(url,credentials,{headers: header});
+   return this.httpClient.post<any>(url,credentials);
+  }
+
+  login(credentials:Credentials):Observable<any>{
+    const url = environment.API_URL+ environment.USER_LOGIN;
+    return this.httpClient.post<any>(url,credentials);
   }
 }

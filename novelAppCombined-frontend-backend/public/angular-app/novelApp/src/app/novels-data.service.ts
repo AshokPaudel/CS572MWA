@@ -27,11 +27,11 @@ export class NovelsDataService {
   }
 
   public getNovelDetails(novelId:string):Observable<Novel>{
-    const url:string= this.baseUrl+"/novel/"+novelId;
+    const url:string= this.baseUrl+"/novels/"+novelId;
     return this.http.get<Novel>(url);
   }
   public deleteNovel(novelId:Novel):Observable<any>{
-    const url:string= this.baseUrl+"/novel/"+novelId;
+    const url:string= this.baseUrl+"/novels/"+novelId;
     return this.http.delete<Novel>(url);
   }
   public addNovel(novel:Novel):Observable<any>{
@@ -39,7 +39,7 @@ export class NovelsDataService {
     const header = new HttpHeaders();
     header.set('Content-Type', 'application/json');
     console.log("Novel dataservice called to add novel ", body);
-    const url:string = this.baseUrl+"/novel";
+    const url:string = this.baseUrl+"/novels";
     return this.http.post(url,novel, {headers: header});
   }
 
@@ -49,24 +49,24 @@ export class NovelsDataService {
     const header = new HttpHeaders();
     header.set('Content-Type', 'application/json');
     console.log("Novel dataservice called to add novel ", body);
-    const url:string=this.baseUrl+"/novel/"+novelID;
+    const url:string=this.baseUrl+"/novels/"+novelID;
     return this.http.put(url,novel, {headers: header});
   }
 
   public getAuthor(novelId:string,authorId:string):Observable<any>{
-    const url=this.baseUrl+"/novel/"+novelId+"/authors/"+authorId;
+    const url=this.baseUrl+"/novels/"+novelId+"/authors/"+authorId;
     console.log("UrL at getAuthor",url)
     return this.http.get(url);
   }
 
   public deleteAuthor(novelId:string, authorId:string):Observable<any>{
-    const url=this.baseUrl+"/novel/"+novelId+"/authors/"+authorId;
+    const url=this.baseUrl+"/novels/"+novelId+"/authors/"+authorId;
     console.log("UrL at Delete",url)
     return this.http.delete(url);
   }
 
   public editAuthor(novelId:string, authorId:string, author:Author):Observable<any>{
-    const url=this.baseUrl+"/novel/"+novelId+"/authors/"+authorId;
+    const url=this.baseUrl+"/novels/"+novelId+"/authors/"+authorId;
     console.log("UrL at Edit Author",url);
     const header = new HttpHeaders();
     const body =JSON.stringify(author);
@@ -75,7 +75,7 @@ export class NovelsDataService {
     return this.http.put(url,author,{headers: header});
   }
   public addAuthor(novelId:string, author:Author):Observable<any>{
-    const url=this.baseUrl+"/novel/"+novelId+"/authors";
+    const url=this.baseUrl+"/novels/"+novelId+"/authors";
     console.log("UrL at Add Author",url);
     const header = new HttpHeaders();
     const body =JSON.stringify(author);

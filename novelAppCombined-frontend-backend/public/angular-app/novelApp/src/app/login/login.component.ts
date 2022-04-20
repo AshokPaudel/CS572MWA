@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { UserDataService } from '../user-data.service';
 
 export class Credentials{
   username!:string;
@@ -21,8 +22,8 @@ export class LoginComponent implements OnInit {
   loginForm!:NgForm;
   credentials!:Credentials;
 
-  constructor() {
-    this.credentials=new Credentials("ashok", "123");
+  constructor(private userDataService:UserDataService) {
+    // this.credentials=new Credentials("ashok", "123");
   }
 
   ngOnInit(): void {
@@ -32,6 +33,14 @@ export class LoginComponent implements OnInit {
     console.log("Logging called");
     console.log(loginForm.value);
     console.log("Credentials : ", this.credentials);
+    this.credentials=new Credentials(loginForm.value.username, loginForm.value.password);
+
+    this.userDataService.login(this.credentials).subscribe({
+      next:success=>console.log(" Login Success ", success),
+      error:err=>console.log(" Login failed ", err),
+      complete:()=>console.log(" Done"),
+    })
+
   }
 
 }
