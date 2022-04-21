@@ -14,16 +14,15 @@
       <li class="nav-item">
         <a class="nav-link" routerLink="/novels">List Novels</a>
       </li>
-      <form class="d-flex" [ngStyle]="{'margin-left':'20px'}">
-
-      <li class="justify-content-end nav-item">
-        <app-login class="d-flex" [ngStyle]="{'margin-left':'20px'}"></app-login>
-      </li>
       <li class="nav-item" [ngStyle]="{'margin-left':'40px'}">
-        <button routerLink="/register" class="d-flex"> Register</button>
+        <a routerLink="/register" class="nav-link d-flex"> Register</a>
       </li >
-      </form>
+
     </ul>
+
+    <form class="d-flex login" action="#" autocomplete="off" style="margin-left: auto;">
+      <app-login class="d-flex" ></app-login>
+      </form>
     <!-- <form class=".justify-content-end" > -->
       <!-- <app-login ></app-login> -->
       <!-- <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"> -->

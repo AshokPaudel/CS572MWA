@@ -1,10 +1,12 @@
 const express = require("express");
 const routes = express.Router();
+
 const novelController = require("../controller/novel.controller");
 const authorController = require("../controller/author.controller");
+const authenticateController = require("../controller/authenticate.controller");
 routes.route("")
     .get(novelController.getAll)
-    .post(novelController.addOne);
+    .post(authenticateController.authenticate, novelController.addOne);
 
 routes.route("/:novelId")
     .get(novelController.getOne)

@@ -46,9 +46,10 @@ const sendResponse = function (res, response) {
     res.status(response.status).json(response.message);
 }
 const dataReadWriteInternalError = function (err, res, response) {
-    console.log("Novel not found for the Id");
+    console.log("Data Read Write Error");
     response.status = parseInt(process.env.INTERNAL_SERVER_ERROR);
     response.message = err;
+    sendResponse(res, response);
 }
 const getOne = function (req, res) {
     console.log("One novel is requested");
@@ -84,13 +85,14 @@ const addOne = function (req, res) {
 
     console.log(newNovel);
     Novel.create(newNovel).then((createdNovel) => _novelCreateSuccess(createdNovel, res, response))
-        .catch((error) => dataReadWriteInternalError(error, response))
-        .finally(() => sendResponse(res, response));
+        .catch((error) => dataReadWriteInternalError(error, res, response))
+    // .finally(() => sendResponse(res, response));
 }
 
 const _novelCreateSuccess = function (createdNovel, res, response) {
     console.log("novel added successfully", createdNovel)
     response.message = createdNovel;
+    sendResponse(res, response)
 }
 
 const _novelDeleteSuccess = function (deletedNovel, response) {

@@ -5,6 +5,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Ng2SearchPipeModule} from 'ng2-search-filter';
+import { ValidateEqualModule } from  'ng-validate-equal';
+import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 // import { NgForm } from '@angular/forms';
 // import { ActivatedRoute } from '@angular/router'; //No need to import here although used in child component
 
@@ -44,6 +46,7 @@ import { LoginComponent } from './login/login.component';
     FormsModule,
     ReactiveFormsModule,
     Ng2SearchPipeModule,
+    ValidateEqualModule,
     // NgForm,
     HttpClientModule, //If not import here cause error
     // ActivatedRoute, //cannot import here cause error
@@ -91,7 +94,9 @@ import { LoginComponent } from './login/login.component';
     }
     ])
   ],
-  providers: [],
+  providers: [{ provide: JWT_OPTIONS, useValue: JWT_OPTIONS },JwtHelperService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+//{provide:JWT_OPTIONS,useValue:""}
