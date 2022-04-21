@@ -10,16 +10,16 @@ routes.route("")
 
 routes.route("/:novelId")
     .get(novelController.getOne)
-    .delete(novelController.deleteOne)
-    .put(novelController.updateOne);
+    .delete(authenticateController.authenticate,novelController.deleteOne)
+    .put(authenticateController.authenticate,novelController.updateOne);
 
 routes.route("/:novelId/authors")
     .get(authorController.getAuthors)
-    .post(authorController.addOneAuthor);
+    .post(authenticateController.authenticate,authorController.addOneAuthor);
 
 routes.route("/:novelId/authors/:authorId")
     .get(authorController.getOne)
-    .delete(authorController.deleteOne)
-    .put(authorController.updateOne);
+    .delete(authenticateController.authenticate,authorController.deleteOne)
+    .put(authenticateController.authenticate,authorController.updateOne);
 
 module.exports = routes;

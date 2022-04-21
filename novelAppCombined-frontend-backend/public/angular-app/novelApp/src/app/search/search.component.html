@@ -1,0 +1,14 @@
+<h3> Search Page </h3> <br/>
+
+<form #movieForm="ngForm">
+    search by novel title: <input type="text" class="form-control" id="title"
+       required
+       [(ngModel)]="title" name="title" /><br/>
+    <button (click)="search()">Search</button>
+</form>
+
+<ul>
+    <li *ngFor="let novel of novels">
+        <a routerLink="/novels/{{novel._id}}">{{novel.title}}</a>
+    </li>
+</ul>

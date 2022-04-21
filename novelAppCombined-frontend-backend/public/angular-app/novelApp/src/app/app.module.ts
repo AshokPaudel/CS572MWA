@@ -24,6 +24,7 @@ import { DeleteAuthorComponent } from './delete-author/delete-author.component';
 import { AddAuthorComponent } from './add-author/add-author.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { LoginComponent } from './login/login.component';
+import { SearchComponent } from './search/search.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -38,7 +39,8 @@ import { LoginComponent } from './login/login.component';
     DeleteAuthorComponent,
     AddAuthorComponent,
     RegistrationComponent,
-    LoginComponent
+    LoginComponent,
+    SearchComponent
   ],
   imports: [
     BrowserModule,
@@ -63,6 +65,9 @@ import { LoginComponent } from './login/login.component';
      {
       path:"novels",
       component:NovelListComponent
+     },{
+      path:"search",
+      component:SearchComponent
      },
      {
       path:"novel/:novelId",

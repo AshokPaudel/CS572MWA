@@ -15,22 +15,20 @@ const _resourceFindFail = function (error, response) {
     response.status = parseInt(process.env.INTERNAL_SERVER_ERROR);
     response.message = error;
 }
-const _addAuthorSendResponse = function (req, res, novel, response) {
+const _addAuthorSendResponse = function (req, res,response, novel) {
+    console.log("Found novel is ",novel);
     const newAuthor = {};
     if (req.body.name) newAuthor.name = req.body.name;
     if (req.body.country) newAuthor.country = req.body.country;
     novel.authors.push(newAuthor);
+    console.log("Pushed authors ",novel.authors);
     _saveNovelSendResponse(novel, res, response);
 }
 const _saveNovelSendResponse = function (res, response, novel) {
-    console.log("At _savenovel novel : ");
-    novel.save().then((savedNovel) => {
-        response.message = savedNovel;
-        console.log("Novel saved ", response);
-    }).catch((error) => {
-        response.status = parseInt(process.env.INTERNAL_SERVER_ERROR);
-        response.message = error;
-    }).finally(() => sendResponse(res, response));
+    console.log("At _saveNovelSendResponse novel : ");
+    novel.save().then((updatedNovel) => _novelUpdateSuccess(updatedNovel, response))
+    .catch((error, response) => dataReadWriteInternalError(error, response))
+    .finally(() => sendResponse(res, response));
 }
 
 const _updateAuthor = function (req, res, response, novel, authorId) {
@@ -40,8 +38,7 @@ const _updateAuthor = function (req, res, response, novel, authorId) {
         console.log("author doesn't exist");
         response.status = parseInt(process.env.RESOURCE_NOT_FOUND_STATUS);
         response.message = process.env.AUTHOR_NOT_FOUND_BYID_MSG;
-
-        sendResponse()
+        sendResponse(res,response);
     } else {
         novel.authors =
             novel.authors.map(author => {
@@ -63,8 +60,7 @@ const _deleteAuthor = function (res, response, novel, authorId) {
         response.status = parseInt(process.env.RESOURCE_NOT_FOUND_STATUS);
         response.message = process.env.AUTHOR_NOT_FOUND_BYID;
         console.log("author doesn't exist");
-
-        // return res.status(404).json({ "message": "author not found for given author Id" });
+        sendResponse(res,response);
     } else {
         novel.authors = novel.authors.filter(author => author._id != authorId);
         _saveNovelSendResponse(res, response, novel);
@@ -84,7 +80,7 @@ const _findNovelAndDeleteAuthor = function (novel, res, response, authorId) {
     if (!novel) {
         response.status = parseInt(process.env.RESOURCE_NOT_FOUND_STATUS)
         response.message = process.env.NOVEL_NOT_FOUND_BYID_MSG;
-        // sendResponse()
+        sendResponse()
     } else {
         _deleteAuthor(res, response, novel, authorId)
     }
@@ -132,8 +128,8 @@ const addOneAuthor = function (req, res) {
         // return res.status(400).json({ "message": "invalid novel id" });
     } else {
         Novel.findById(novelId).select("authors")
-            .then((novel) => _addAuthorSendResponse(req, res, novel, response))
-            .catch((error) => dataReadWriteInternalError(error, response))
+            .then((novel) => _addAuthorSendResponse(req, res, response,novel))
+            .catch((error) => dataReadWriteInternalError(error,res, response))
         // .finally(()=>sendResponse(res,response));
     }
 };
@@ -172,7 +168,7 @@ const deleteOne = function (req, res) {
     else {
         Novel.findById(novelId).select("authors").then((novel) => _findNovelAndDeleteAuthor(novel, res, response, authorId))
             .catch(error => dataReadWriteInternalError(error, response))
-            .finally(() => sendResponse(res, response));
+            // .finally(() => sendResponse(res, response));
     }
 
 }

@@ -47,8 +47,7 @@ export class EditAuthorComponent implements OnInit {
       next:author=>{
         this.author=author
         window.alert("Author Successfully Modified");
-        // const routeURL = "novel/"+this.novelId+"/author/"+this.authorId;
-        const routeURL= "novelEdit/"+this.novelId;
+        const routeURL = "novel/"+this.novelId
         console.log(routeURL);
         this.router.navigate([routeURL]);
         // this.router.navigate("/novel/"+this.novelId+"/authors/"+this.authorId);

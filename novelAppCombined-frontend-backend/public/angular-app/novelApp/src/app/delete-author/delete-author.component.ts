@@ -18,12 +18,17 @@ export class DeleteAuthorComponent implements OnInit {
     this.novelDataService.deleteAuthor(this.novelId,authorId).subscribe({
       next:novel=>window.alert("Novel deleted"),
       error:err =>window.alert("Error deleting"),
-      complete:()=>console.log("Done")
-
-    });
-    const routeURL= "novelEdit/"+this.novelId;
+      complete:()=>{
+        console.log("Done");
+        const routeURL= "novel/"+this.novelId;
         console.log(routeURL);
         this.router.navigate([routeURL]);
+      }
+
+    });
+    // const routeURL= "novels/"+this.novelId;
+    //     console.log(routeURL);
+    //     this.router.navigate([routeURL]);
 
   }
 

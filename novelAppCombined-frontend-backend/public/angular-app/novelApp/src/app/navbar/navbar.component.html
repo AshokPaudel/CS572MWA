@@ -14,14 +14,20 @@
       <li class="nav-item">
         <a class="nav-link" routerLink="/novels">List Novels</a>
       </li>
-      <li class="nav-item" [ngStyle]="{'margin-left':'40px'}">
+      <li>
+        <a class="nav-link" routerLink="/search">Search</a>
+      </li>
+      <li *ngIf="!loginFlag" class="nav-item" [ngStyle]="{'margin-left':'40px'}">
         <a routerLink="/register" class="nav-link d-flex"> Register</a>
+      </li >
+      <li *ngIf="loginFlag" class="nav-item" [ngStyle]="{'margin-left':'40px'}">
+        <a routerLink="/profile" class="nav-link d-flex"> Profile</a>
       </li >
 
     </ul>
 
     <form class="d-flex login" action="#" autocomplete="off" style="margin-left: auto;">
-      <app-login class="d-flex" ></app-login>
+      <app-login class="d-flex" (emitFlag)="setLoginFlag($event)"></app-login>
       </form>
     <!-- <form class=".justify-content-end" > -->
       <!-- <app-login ></app-login> -->

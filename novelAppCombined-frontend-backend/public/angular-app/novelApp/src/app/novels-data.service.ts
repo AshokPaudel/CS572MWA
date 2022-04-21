@@ -1,23 +1,19 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { Observable } from 'rxjs';
+
 import { Author, Novel } from './novel-list/novel-list.component';
 import { environment } from 'src/environments/environment';
+import { AuthenticationService } from './authentication.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NovelsDataService {
-  currentNovel!:Novel;
-  constructor(private http:HttpClient) { }
+
+   currentNovel!:Novel;
+  constructor(private http:HttpClient , private authenticateService:AuthenticationService ) { }
   baseUrl:string = environment.API_URL;
-
-  public getNovels():Observable<Novel[]>{
-    console.log("I am at getNovels");
-    const url:string= this.baseUrl+"/novels";
-    return this.http.get<Novel[]>(url);
-
-  }
 
   public saveCurrentNovel(novel:Novel){
     this.currentNovel=novel;
@@ -26,63 +22,59 @@ export class NovelsDataService {
     return this.currentNovel;
   }
 
-  public getNovelDetails(novelId:string):Observable<Novel>{
-    const url:string= this.baseUrl+"/novels/"+novelId;
-    return this.http.get<Novel>(url);
-  }
-  public deleteNovel(novelId:Novel):Observable<any>{
-    const url:string= this.baseUrl+"/novels/"+novelId;
-    return this.http.delete<Novel>(url);
-  }
-  public addNovel(novel:Novel):Observable<any>{
-    const body = JSON.stringify(novel);
-    const header = new HttpHeaders();
-    header.set('Content-Type', 'application/json');
-    console.log("Novel dataservice called to add novel ", body);
-    const url:string = this.baseUrl+"/novels";
-    return this.http.post(url,novel, {headers: header});
+  public getNovels():Observable<Novel[]>{
+    const url:string= this.baseUrl+environment.NOVELS_PATH;
+    return this.http.get<Novel[]>(url);
+
   }
 
-  public editNovel(novelID:string,novel:Novel):Observable<any>{
-    console.log("request from editNovel ", novelID,novel);
-    const body = JSON.stringify(novel);
-    const header = new HttpHeaders();
-    header.set('Content-Type', 'application/json');
-    console.log("Novel dataservice called to add novel ", body);
-    const url:string=this.baseUrl+"/novels/"+novelID;
-    return this.http.put(url,novel, {headers: header});
+  public getNovelDetails(novelId:string):Observable<Novel>{
+    const url:string= this.baseUrl+environment.NOVELS_PATH+novelId;
+    return this.http.get<Novel>(url);
+  }
+  public deleteNovel(novelId:Novel):Observable<Novel>{
+    const url:string= this.baseUrl+environment.NOVELS_PATH+novelId;
+    return this.http.delete<Novel>(url, {headers:this.getHeader()});
+  }
+  public addNovel(novel:Novel):Observable<Novel>{
+
+    const url:string = this.baseUrl+environment.NOVELS_PATH;
+    return this.http.post<Novel>(url,novel, {headers: this.getHeader()});
+  }
+
+  public editNovel(novelId:string,novel:Novel):Observable<Novel>{
+    const url=this.baseUrl+environment.NOVELS_PATH+novelId
+    return this.http.put<Novel>(url,novel, {headers: this.getHeader()});
   }
 
   public getAuthor(novelId:string,authorId:string):Observable<any>{
-    const url=this.baseUrl+"/novels/"+novelId+"/authors/"+authorId;
-    console.log("UrL at getAuthor",url)
+    const url=this.baseUrl+environment.NOVELS_PATH+novelId+environment.AUTHORS_PATH+authorId;
     return this.http.get(url);
   }
 
-  public deleteAuthor(novelId:string, authorId:string):Observable<any>{
-    const url=this.baseUrl+"/novels/"+novelId+"/authors/"+authorId;
+  public deleteAuthor(novelId:string, authorId:string):Observable<Author[]>{
+    const url=this.baseUrl+environment.NOVELS_PATH+novelId+environment.AUTHORS_PATH+authorId;
     console.log("UrL at Delete",url)
-    return this.http.delete(url);
+    return this.http.delete<Author[]>(url,{headers: this.getHeader()});
   }
 
   public editAuthor(novelId:string, authorId:string, author:Author):Observable<any>{
-    const url=this.baseUrl+"/novels/"+novelId+"/authors/"+authorId;
-    console.log("UrL at Edit Author",url);
-    const header = new HttpHeaders();
-    const body =JSON.stringify(author);
-    console.log("body at edit author", body);
-    header.set('Content-Type', 'application/json');
-    return this.http.put(url,author,{headers: header});
+    const url=this.baseUrl+environment.NOVELS_PATH+novelId+environment.AUTHORS_PATH+authorId;
+    return this.http.put(url,author,{headers: this.getHeader()});
   }
   public addAuthor(novelId:string, author:Author):Observable<any>{
-    const url=this.baseUrl+"/novels/"+novelId+"/authors";
-    console.log("UrL at Add Author",url);
-    const header = new HttpHeaders();
-    const body =JSON.stringify(author);
-    console.log("body at ADd author", body);
-    header.set('Content-Type', 'application/json');
-    return this.http.post(url,author,{headers: header});
+    const url=this.baseUrl+environment.NOVELS_PATH+novelId+environment.AUTHORS_PATH;
+    return this.http.post(url,author,{headers: this.getHeader()});
+  }
+  public searchNovels(title:string):Observable<Novel[]>{
+    console.log("Search Service");
+    const url: string = this.baseUrl + environment.NOVELS_SEARCH + title;
+    return this.http.get<Novel[]>(url);
   }
 
-
+  getHeader(){
+    return new HttpHeaders({
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer ' + this.authenticateService.getToken()});
+  }
 }

@@ -4,7 +4,8 @@ const sendResponse = require("./novel.controller").sendResponse;
 const jwtVerifyPromise = util.promisify(jwt.verify,{context:jwt});
 
 
-const authenticate= function(req,res,next){
+const authenticate= async function(req,res,next){
+    console.log("I am at authenticate function ",req.headers);
     const response= {
         status:403,
         message:{message:"No token provided"}
@@ -12,13 +13,16 @@ const authenticate= function(req,res,next){
     const headerExists = req.headers.authorization;
 
     if(headerExists){
-        console.log(req.headers)
+        // console.log(req.headers)
         const token=req.headers.authorization.split(" ")[1];
         console.log("token  = ",token);
         jwtVerifyPromise(token,process.env.JWT_PASSWORD_PKEY)
-            .then(()=>next())
+            .then((data)=>{
+                console.log("data = ",data);
+                next()
+            })
             .catch((error)=>_invalidAuthorizationToken(error,res,response))
-        // jwt.verify(token,process.env.JWT_PASSWORD_KEY)
+
     }else{
         response.status=403;
         response.message="No token provided";

@@ -19,10 +19,12 @@ const addUser = function (req, res) {
     } else {
         response.status = process.env.INVALID_FORM_INPUT_STATUS;
         response.message = process.env.INVALID_FORM_INPUT_MSG;
+        sendResponse(res,response);
     }
 }
 const _generateHash = function (salt, req, res, response) {
     //use the generatedSalt to create Hash of the password
+    console.log("Hash generated");
     bcrypt.hash(req.body.password, salt)
         .then((hashedPwd) => _saveUserToDB(hashedPwd, req, res, response))
         .catch((error) => _catchHashGenError(error, res, response));

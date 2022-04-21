@@ -1,4 +1,5 @@
-<div *ngIf="!this.isLoggedIn">
+<!-- {{loginFlag}} -->
+<div *ngIf="!loginFlag">
   <form #loginForm=ngForm (ngSubmit)="login(loginForm)">
   <div>
     <label for="">username
@@ -13,7 +14,7 @@
 </form>
 </div>
 
-<div *ngIf="this.isLoggedIn" >
+<div *ngIf="loginFlag" >
   <span >Welcome {{this.username}} !!!</span>
   <button (click)="logout()">Logout</button>
 </div>

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthenticationService } from '../authentication.service';
 
 @Component({
   selector: 'app-navbar',
@@ -7,9 +8,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor() { }
+  loginFlag:boolean=false;
+  // =this.authenticateService.isLoggedIn;
+
+  constructor(private authenticateService: AuthenticationService) { }
 
   ngOnInit(): void {
+    console.log("At navts",this.authenticateService.isLoggedIn);
   }
+  setLoginFlag(loginFlag:boolean){
+    console.log("login ", loginFlag);
+    this.loginFlag=loginFlag;
+  }
+
+
 
 }

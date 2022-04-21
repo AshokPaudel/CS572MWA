@@ -30,23 +30,37 @@ const getAll = function (req, res) {
     if (response.status != parseInt(process.env.OK)) {
         sendResponse(res, response);
         // return res.status(response.status).json(response.message);
-    } else {
-        Novel.find().limit(count)
+    }else if(req.query && req.query.search) {
+        _runNovelQuery(res,response,req.query.search,offset.count);
+    }
+    else {
+        Novel.find().skip(offset).limit(count)
             .then((data) => _novelFindSuccess(data, res, response))
             .catch((err) => dataReadWriteInternalError(err, res, response))
-            .finally(() => sendResponse(res, response))
+            // .finally(() => sendResponse(res, response))
     }
 };
+
+const _runNovelQuery = function(res,response,title,offset,count){
+    const query = {
+        "title": {$regex: title}
+    };
+    Novel.find(query)
+    .limit(count).then((data)=>_novelFindSuccess(data,res,response))
+    .catch((err) => dataReadWriteInternalError(err, res, response))
+    // .finally(() => sendResponse(res, response))
+}
 
 const _novelFindSuccess = function (data, res, response) {
     console.log("At _novelFindSuccess");
     response.message = data;
+    sendResponse(res, response);
 }
 const sendResponse = function (res, response) {
     res.status(response.status).json(response.message);
 }
 const dataReadWriteInternalError = function (err, res, response) {
-    console.log("Data Read Write Error");
+    console.log("Data Read Write Error: ",err);
     response.status = parseInt(process.env.INTERNAL_SERVER_ERROR);
     response.message = err;
     sendResponse(res, response);
@@ -68,7 +82,7 @@ const getOne = function (req, res) {
         Novel.findById(novelId)
             .then((data) => _novelFindSuccess(data, res, response))
             .catch((err) => dataReadWriteInternalError(err, res, response))
-            .finally(() => sendResponse(res, response));
+            // .finally(() => sendResponse(res, response));
     }
 }
 const addOne = function (req, res) {

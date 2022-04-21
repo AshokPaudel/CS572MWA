@@ -31,7 +31,7 @@ export class Author {
 })
 export class NovelListComponent implements OnInit {
   novels: Novel[] = [];
-  novelSearch!:string;
+  // novelSearch!:string;
 
   constructor(private novelService: NovelsDataService) {
     // this.novelService=novelService;

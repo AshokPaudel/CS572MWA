@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormGroup, NgForm, ValidatorFn } from '@angular/forms';
 import { UserDataService } from '../user-data.service';
 import {Credentials} from '../login/login.component'
+import { AuthenticationService } from '../authentication.service';
 
 @Component({
   selector: 'app-registration',
@@ -13,8 +14,12 @@ export class RegistrationComponent implements OnInit {
   @ViewChild('registrationForm')
   registrationForm!:NgForm;
   credentials!:Credentials;
+  #isLoggenIn:boolean=this.authticationService.isLoggedIn;
+  get isLoggedIn(){
+    return this.#isLoggenIn;
+  }
 
-  constructor(private userDataService:UserDataService) { }
+  constructor(private userDataService:UserDataService, private authticationService:AuthenticationService) { }
 
 
   ngOnInit(): void {
@@ -61,10 +66,11 @@ export class RegistrationComponent implements OnInit {
 
   register(registrationForm:NgForm){
     console.log("login value ", registrationForm.value);
-    console.log( registrationForm);
-    console.log( registrationForm.valid);
+    // console.log( registrationForm);
+    console.log( registrationForm.value);
     // console.log(this.validatePassword());
-    this.credentials=new Credentials(registrationForm.value.username, registrationForm.value.password);
+    this.credentials=new Credentials(registrationForm.value.username, registrationForm.value.passwords.password);
+    console.log(this.credentials);
     this.userDataService.registerUser(this.credentials).subscribe({
       next:user=>console.log("User registered ", user),
       error:err=>console.log("Error registering user ",err),

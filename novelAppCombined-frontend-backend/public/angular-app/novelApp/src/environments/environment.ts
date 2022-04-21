@@ -6,8 +6,11 @@ export const environment = {
   production: false,
   API_URL: "Configure url at proper files",
   USER_URL:"user path",
+  NOVELS_PATH:"PATH OF GET ALL NOVELS",
+  AUTHORS_PATH:"PATH OF GET ALL AUTHORS",
   USER_LOGIN:"Login Path",
-  TOKEN_STORAGE_KEY: "The name of the key used by token in browser local storage"
+  TOKEN_STORAGE_KEY: "The name of the key used by token in browser local storage",
+  NOVELS_SEARCH:"Path of Novel Search"
 };
 
 /*

@@ -1,10 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
 import { UserDataService } from '../user-data.service';
 import { AuthenticationService } from '../authentication.service';
+import { Router } from '@angular/router';
 
 export class Credentials{
   username!:string;
@@ -26,22 +27,30 @@ export class LoginComponent implements OnInit {
   loginForm!:NgForm;
   credentials!:Credentials;
 
+  @Output()
+  emitFlag=new EventEmitter<boolean>();
+
   #username!:string ;
-  #isLoggedIn:boolean=false;
+  loginFlag!:boolean;
+  // =this.authenticateService.isLoggedIn;
   // set username(username){this.#username=username};
   get username(){
     return this.#username;
   }
-  get isLoggedIn(){
-    return this.#isLoggedIn;
-  }
 
-  constructor(private userDataService:UserDataService, private authenticateService:AuthenticationService, private _jwtHelper:JwtHelperService) {
+  constructor(private userDataService:UserDataService, private authenticateService:AuthenticationService,private router :Router) {
     // this.credentials=new Credentials("ashok", "123");
   }
 
   ngOnInit(): void {
-    this.#isLoggedIn=this.authenticateService.isLoggedIn;
+
+    if(this.authenticateService.getToken()){
+      this.authenticateService.isLoggedIn=true;
+      this.authenticateService.setUsername();
+      this.#username=this.authenticateService.username;
+    }
+    this.loginFlag=this.authenticateService.isLoggedIn;
+
   }
   login(loginForm:NgForm):void{
     console.log("Logging called");
@@ -52,11 +61,13 @@ export class LoginComponent implements OnInit {
     this.userDataService.login(this.credentials).subscribe({
       next:(loginResponse)=>{
         console.log(loginResponse);
+        this.emitFlag.emit(true);
         this.authenticateService.isLoggedIn=true;
         this.authenticateService.saveToken(loginResponse.token);
         this.authenticateService.setUsername();
-        this.#isLoggedIn=this.authenticateService.isLoggedIn;
         this.#username=this.authenticateService.username;
+        this.loginFlag=this.authenticateService.isLoggedIn;
+        this.router.navigate(["/"]);
       },
       error:err=>console.log(" Login failed ", err),
       complete:()=>console.log(" Done"),
@@ -65,7 +76,9 @@ export class LoginComponent implements OnInit {
   }
   logout(){
     console.log("Log out requested");
+    this.emitFlag.emit(false);
     this.authenticateService.isLoggedIn=false;
+    this.loginFlag=false;
     this.authenticateService.removeToken();
 
   }

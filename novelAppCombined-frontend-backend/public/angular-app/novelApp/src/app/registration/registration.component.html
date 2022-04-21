@@ -1,34 +1,36 @@
-<!-- <form #registrationForm="ngForm" (ngSubmit) = "register(registrationForm)"> -->
-<form #registrationForm="ngForm" (ngSubmit)="register(registrationForm)">
-  <div class="form-group mx-sm-3 mb-2">
-    <label>User Name</label>
-     <input type="text" class="form-control" name="username" required placeholder="User name"  #username="ngModel" ngModel>
-     <div *ngIf="username.invalid && (username.dirty || username.touched)" class="alert">
-      <div *ngIf="username.errors?.['required']">
-        User Name is required.
+  <form #registrationForm="ngForm" (ngSubmit)="register(registrationForm)">
+    <div class="form-group mx-sm-3 mb-2">
+      <label>User Name</label>
+      <input type="text" class="form-control" name="username" required placeholder="User name" #username="ngModel"
+        ngModel>
+      <div *ngIf="username.invalid && (username.dirty || username.touched)" class="alert">
+        <div *ngIf="username.errors?.['required']">
+          User Name is required.
+        </div>
       </div>
     </div>
-  </div>
-  <div ngModelGroup="passwords" #passwords="ngModelGroup" appCheckPassword>
-  <div class="form-group  mx-sm-3 mb-2">
-    <label>Password</label>
-    <input type="password" class="form-control" name="password" placeholder="Password"  required #password="ngModel"ngModel>
-  </div>
-  <div class="form-group  mx-sm-3 mb-2">
-    <label>Repeat Password</label>
-    <input type="password" ngValidateEqual="password" class="form-control" name="repeatPassword" placeholder="RepeatPassword" required #repeatPassword="ngModel" ngModel>
-  </div>
-</div>
+    <div ngModelGroup="passwords" #passwords="ngModelGroup" appCheckPassword>
+      <div class="form-group  mx-sm-3 mb-2">
+        <label>Password</label>
+        <input type="password" class="form-control" name="password" placeholder="Password" required #password="ngModel"
+          ngModel>
+      </div>
+      <div class="form-group  mx-sm-3 mb-2">
+        <label>Repeat Password</label>
+        <input type="password" ngValidateEqual="password" class="form-control" name="repeatPassword"
+          placeholder="RepeatPassword" required #repeatPassword="ngModel" ngModel>
+      </div>
+    </div>
 
-<div *ngIf="(repeatPassword.dirty || repeatPassword.touched) &&
-repeatPassword.invalid">
+    <div *ngIf="(repeatPassword.dirty || repeatPassword.touched) &&repeatPassword.invalid">
 
-		<p style="color:red" *ngIf="repeatPassword.hasError('notEqual') &&
+      <p style="color:red" *ngIf="repeatPassword.hasError('notEqual') &&
 			password.valid">
-			Passwords Don't Match
-		</p>
-	</div>
+        Passwords Don't Match
+      </p>
+    </div>
 
-  <button type="submit" class="btn btn-primary  mx-sm-3 mb-2">Submit</button>
-  <button type="reset" class="btn btn-warning  mx-sm-3 mb-2"> Reset</button>
-</form>
+    <button type="submit" class="btn btn-primary  mx-sm-3 mb-2">Submit</button>
+    <button type="reset" class="btn btn-warning  mx-sm-3 mb-2"> Reset</button>
+  </form>
+
