@@ -1,36 +1,61 @@
-  <form #registrationForm="ngForm" (ngSubmit)="register(registrationForm)">
-    <div class="form-group mx-sm-3 mb-2">
-      <label>User Name</label>
-      <input type="text" class="form-control" name="username" required placeholder="User name" #username="ngModel"
-        ngModel>
-      <div *ngIf="username.invalid && (username.dirty || username.touched)" class="alert">
-        <div *ngIf="username.errors?.['required']">
-          User Name is required.
-        </div>
-      </div>
-    </div>
-    <div ngModelGroup="passwords" #passwords="ngModelGroup" appCheckPassword>
-      <div class="form-group  mx-sm-3 mb-2">
-        <label>Password</label>
-        <input type="password" class="form-control" name="password" placeholder="Password" required #password="ngModel"
-          ngModel>
-      </div>
-      <div class="form-group  mx-sm-3 mb-2">
-        <label>Repeat Password</label>
-        <input type="password" ngValidateEqual="password" class="form-control" name="repeatPassword"
-          placeholder="RepeatPassword" required #repeatPassword="ngModel" ngModel>
-      </div>
-    </div>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-6">
+<form ngNativeValidate #registrationForm="ngForm" (ngSubmit)="register(registrationForm)">
 
-    <div *ngIf="(repeatPassword.dirty || repeatPassword.touched) &&repeatPassword.invalid">
+  <div *ngIf="registerSuccess" class="alert alert-success alert-dismissible fade show mt-2">
+    User Registered Successfully
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  </div>
 
-      <p style="color:red" *ngIf="repeatPassword.hasError('notEqual') &&
+  <div *ngIf="registerFail" class="alert alert-danger alert-dismissible fade show mt-2">
+    Failed to register User
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  </div>
+
+  <div class="form-group mx-sm-3 mb-2">
+    <label>User Name</label>
+    <input type="text" class="form-control" name="username" required placeholder="User name" #username="ngModel"
+      ngModel>
+    <!-- <div *ngIf="username.invalid && (username.dirty || username.touched)" class="alert">
+      <div *ngIf="username.errors?.['required']">
+        User Name is required.
+      </div>
+    </div> -->
+  </div>
+
+  <div class="form-group  mx-sm-3 mb-2">
+    <label>Password</label>
+    <input type="password" class="form-control" name="password" placeholder="Password" required #password="ngModel"
+      ngModel>
+  </div>
+  <!-- <div *ngIf="username.valid &&password.invalid && (password.dirty || password.touched)" class="alert">
+    <div *ngIf="password.errors?.['required']">
+      Password is required.
+    </div>
+  </div> -->
+  <div class="form-group  mx-sm-3 mb-2">
+    <label>Repeat Password</label>
+    <input type="password" class="form-control" name="repeatPassword" placeholder="RepeatPassword" required
+      #repeatPassword="ngModel" ngModel>
+  </div>
+  <!-- <div *ngIf="username.valid &&password.valid&&repeatPassword.invalid && (repeatPassword.dirty || repeatPassword.touched)" class="alert">
+    <div *ngIf="repeatPassword.errors?.['required']">
+      Repeat Password is required.
+    </div>
+  </div> -->
+
+  <div *ngIf="(repeatPassword.dirty || repeatPassword.touched) &&repeatPassword.invalid">
+
+    <p style="color:red" *ngIf="repeatPassword.hasError('notEqual') &&
 			password.valid">
-        Passwords Don't Match
-      </p>
+      Passwords Don't Match
+    </p>
+  </div>
+
+  <button type="submit" class="btn btn-primary  mx-sm-3 mb-2" >Submit</button>
+  <button (click)="reset()" type="reset" class="btn btn-warning  mx-sm-3 mb-2"> Reset</button>
+</form>
     </div>
-
-    <button type="submit" class="btn btn-primary  mx-sm-3 mb-2">Submit</button>
-    <button type="reset" class="btn btn-warning  mx-sm-3 mb-2"> Reset</button>
-  </form>
-
+  </div>
+</div>

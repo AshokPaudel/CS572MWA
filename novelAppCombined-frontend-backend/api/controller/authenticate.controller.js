@@ -3,7 +3,6 @@ const util = require("util");
 const sendResponse = require("./novel.controller").sendResponse;
 const jwtVerifyPromise = util.promisify(jwt.verify,{context:jwt});
 
-
 const authenticate= async function(req,res,next){
     console.log("I am at authenticate function ",req.headers);
     const response= {
@@ -17,10 +16,7 @@ const authenticate= async function(req,res,next){
         const token=req.headers.authorization.split(" ")[1];
         console.log("token  = ",token);
         jwtVerifyPromise(token,process.env.JWT_PASSWORD_PKEY)
-            .then((data)=>{
-                console.log("data = ",data);
-                next()
-            })
+            .then((data)=>  next())
             .catch((error)=>_invalidAuthorizationToken(error,res,response))
 
     }else{
@@ -31,6 +27,7 @@ const authenticate= async function(req,res,next){
     
     }
 }
+
 const _invalidAuthorizationToken = function(error,res,response){
 	console.log(error);
 	response.status=401;

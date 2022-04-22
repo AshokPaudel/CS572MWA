@@ -25,6 +25,9 @@ import { AddAuthorComponent } from './add-author/add-author.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { LoginComponent } from './login/login.component';
 import { SearchComponent } from './search/search.component';
+import { ProfileComponent } from './profile/profile.component';
+import { ErrorPageComponent } from './error-page/error-page.component';
+import { FooterComponent } from './footer/footer.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -40,7 +43,10 @@ import { SearchComponent } from './search/search.component';
     AddAuthorComponent,
     RegistrationComponent,
     LoginComponent,
-    SearchComponent
+    SearchComponent,
+    ProfileComponent,
+    ErrorPageComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
@@ -65,9 +71,14 @@ import { SearchComponent } from './search/search.component';
      {
       path:"novels",
       component:NovelListComponent
-     },{
+     },
+     {
       path:"search",
       component:SearchComponent
+     },
+     {
+      path:"profile",
+      component:ProfileComponent
      },
      {
       path:"novel/:novelId",
@@ -96,6 +107,10 @@ import { SearchComponent } from './search/search.component';
     },{
       path:"novelEdit/:novelId/addAuthor",
       component:AddAuthorComponent
+    },
+    {
+      path:"**",
+      component:ErrorPageComponent
     }
     ])
   ],

@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
+import { AuthenticationService } from '../authentication.service';
 
 import { Novel,Author } from '../novel-list/novel-list.component';
 import { NovelsDataService } from '../novels-data.service';
@@ -14,7 +15,7 @@ import { NovelsDataService } from '../novels-data.service';
 export class NovelDetailsComponent implements OnInit {
   novelId!:string;
 
-  constructor(private novelDataService:NovelsDataService, private activatedRoute:ActivatedRoute, private router:Router) {
+  constructor(private novelDataService:NovelsDataService, private activatedRoute:ActivatedRoute, private router:Router, private authenticateService:AuthenticationService) {
     this.novelDataService=novelDataService;
     this.activatedRoute=activatedRoute;
   }
@@ -24,9 +25,10 @@ export class NovelDetailsComponent implements OnInit {
 
   novel!:Novel;
   authors!:Author;
-
+  loginFlag!:boolean;
 
   ngOnInit(): void {
+    this.loginFlag=this.authenticateService.isLoggedIn;
     this.novelId = this.activatedRoute.snapshot.params["novelId"];
     this.novelDataService.getNovelDetails(this.novelId).subscribe({
       next:novel=>{
@@ -38,12 +40,6 @@ export class NovelDetailsComponent implements OnInit {
       }
 
     });
-    // setTimeout(()=>{
-    //   // console.log("novel inside timeout ", this.novel1);
-    //   // this.novelDetailsForm.setValue(this.novel1);
-    // },0)
-    // this.authors=this.novel.authors;
-    // this.authors=this.novel.authors;
   }
   onDelete():void{
     const novelId= this.activatedRoute.snapshot.params["novelId"];
@@ -55,7 +51,8 @@ export class NovelDetailsComponent implements OnInit {
     this.novelDataService.deleteNovel(novelId).subscribe({
       next:novel=>{
         console.log("Novel deleted ", novel);
-        this.router.navigate(['/operationSuccess']);
+        // this.router.navigate(['/operationSuccess']);
+        this.router.navigateByUrl("/novels");
 
       },
       error:err=> console.log("Error deleting novel ",err),

@@ -3,10 +3,10 @@
     <div class="col-md-6">
       <p> Please fill the following form to add novel</p>
 
-      <form #addNovelForm="ngForm" (ngSubmit)="addNovel(addNovelForm)">
+      <form ngNativeValidate #addNovelForm="ngForm" (ngSubmit)="addNovel(addNovelForm)">
         <div class="form-group">
-          <label for="title">Title</label>
-          <input type="text" class="form-control" id="title" name="title" placeholder="Enter title of the Novel"
+          <label for="title">Title<span style="color: red;"> *</span></label>
+          <input type="text" required class="form-control" id="title" name="title" placeholder="Enter title of the Novel"
             ngModel />
 
         </div>
@@ -20,8 +20,8 @@
         <hr/>
         <div class="form-group row">
           <div class="form-inline col-lg-6 col-md-6 col-sm-6 col-xs-6">
-              <label for="fname">Author Name</label>
-              <input type="text" class="form-control" name="authorName" placeholder="Name of Author" ngModel>
+              <label for="fname">Author Name<span style="color: red;"> *</span></label>
+              <input type="text" required class="form-control" name="authorName" placeholder="Name of Author" ngModel>
           </div>
           <div class="form-inline col-lg-6 col-md-6 col-sm-6 col-xs-6">
               <label for="lname">Country</label>

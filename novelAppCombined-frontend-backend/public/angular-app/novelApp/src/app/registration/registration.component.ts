@@ -15,68 +15,49 @@ export class RegistrationComponent implements OnInit {
   registrationForm!:NgForm;
   credentials!:Credentials;
   #isLoggenIn:boolean=this.authticationService.isLoggedIn;
+  registerSuccess:boolean=false;
+  registerFail:boolean=false
   get isLoggedIn(){
     return this.#isLoggenIn;
   }
 
   constructor(private userDataService:UserDataService, private authticationService:AuthenticationService) { }
 
-
   ngOnInit(): void {
   }
 
-//   validatePassword(): ValidatorFn {
-//     return (control: AbstractControl) => {
-//          let isValid = false;
-//          if (control && control instanceof FormGroup) {
-//             let group = control as FormGroup;
-//             if (group.controls['password'] && group.controls['repeatPassword']) {
-//               isValid = group.controls['password'].value == group.controls['repeatPassword'].value;
-//             }
-//           }
-//          if (isValid) {
-//             return null;
-//          } else {
-//             return { 'passwordCheck': 'failed'}
-//          }
-//     }
-//  }
-
-// public ConfirmedValidator(controlName: string, matchingControlName: string){
-
-//   return (formGroup: FormGroup) => {
-
-//       const control = formGroup.controls[controlName];
-
-//       const matchingControl = formGroup.controls[matchingControlName];
-
-//       if (control.value !== matchingControl.value) {
-
-//           matchingControl.setErrors({ confirmedValidator: true });
-
-//       } else {
-
-//           matchingControl.setErrors(null);
-
-//       }
-
-//   }
-
-// }
-
   register(registrationForm:NgForm){
-    console.log("login value ", registrationForm.value);
-    // console.log( registrationForm);
     console.log( registrationForm.value);
-    // console.log(this.validatePassword());
-    this.credentials=new Credentials(registrationForm.value.username, registrationForm.value.passwords.password);
-    console.log(this.credentials);
-    this.userDataService.registerUser(this.credentials).subscribe({
-      next:user=>console.log("User registered ", user),
-      error:err=>console.log("Error registering user ",err),
-      complete:()=>console.log("done")
-    });
+    if(this.validateForm(registrationForm)){
+      console.log("Form validation success");
+      this.credentials=new Credentials(registrationForm.value.username, registrationForm.value.password);
+      console.log(this.credentials);
+      this.userDataService.registerUser(this.credentials).subscribe({
+        next:user=>{
+          console.log("User registered ", user);
+          this.registerSuccess=true;
+        },
+        error:err=>{
+          console.log("Error registering user ",err);
+          this.registerFail=true;
+        },
+        complete:()=>console.log("done")
+      });
+    }else{
+      console.log("Form validation Failed");
+      this.registerFail=true;
+    }
 
+
+  }
+
+  validateForm(registrationForm:NgForm):boolean{
+    if(!registrationForm.value.username || !registrationForm.value.password ||!registrationForm.value.repeatPassword) return false;
+    return registrationForm.value.password ===registrationForm.value.repeatPassword;
+  }
+  reset(){
+    this.registerFail=false;
+    this.registerSuccess=false;
   }
 
 }

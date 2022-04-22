@@ -20,9 +20,10 @@ export class DeleteAuthorComponent implements OnInit {
       error:err =>window.alert("Error deleting"),
       complete:()=>{
         console.log("Done");
-        const routeURL= "novel/"+this.novelId;
-        console.log(routeURL);
-        this.router.navigate([routeURL]);
+        this.router.navigateByUrl("novelEdit/"+this.novelId);
+        // const routeURL= "novel/"+this.novelId;
+        // console.log(routeURL);
+        // this.router.navigate([routeURL]);
       }
 
     });

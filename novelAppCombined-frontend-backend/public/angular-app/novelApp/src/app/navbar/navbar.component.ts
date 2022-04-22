@@ -8,13 +8,15 @@ import { AuthenticationService } from '../authentication.service';
 })
 export class NavbarComponent implements OnInit {
 
-  loginFlag:boolean=false;
+  loginFlag!:boolean;
+  // loginFlag:boolean=false;
   // =this.authenticateService.isLoggedIn;
 
   constructor(private authenticateService: AuthenticationService) { }
 
   ngOnInit(): void {
     console.log("At navts",this.authenticateService.isLoggedIn);
+    this.loginFlag=this.authenticateService.isLoggedIn;
   }
   setLoginFlag(loginFlag:boolean){
     console.log("login ", loginFlag);

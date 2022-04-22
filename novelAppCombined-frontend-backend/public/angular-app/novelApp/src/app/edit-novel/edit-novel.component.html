@@ -22,7 +22,7 @@
       <li *ngFor = "let author of authors">
         <div class="row">
         <div class="col-md-6">
-          {{author.name}}, {{author.country}}
+          {{author.name |titlecase}}, {{author.country|uppercase}}
         </div>
         <div class="col-md-6">
           <div class="btn-group">

@@ -11,13 +11,17 @@ export class SearchComponent implements OnInit {
 
   title: string= "";
   novels: Novel[]= [];
+  isSearch:boolean=false;
   constructor(private novelsDataService:NovelsDataService) { }
 
   ngOnInit(): void {
   }
   search(): void {
     this.novelsDataService.searchNovels(this.title).subscribe({
-      next:(response)=>this.fillNovelsFromService(response),
+      next:(response)=>{
+        this.fillNovelsFromService(response);
+        this.isSearch=true;
+      },
       error:(err)=>console.log("error ", err),
       complete:()=>console.log("done")
     });

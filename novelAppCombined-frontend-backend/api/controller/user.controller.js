@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const User = mongoose.model(process.env.USER_MODEL);
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { dataReadWriteInternalError } = require("./novel.controller");
 
 const sendResponse = require("./novel.controller").sendResponse;
 
@@ -51,18 +52,18 @@ const _saveUserToDB = function (hashedPwd, req, res, response) {
     const password = hashedPwd;
     const newUser = { name: name, username: username, password: password };
     User.create(newUser)
-        .then((createdUser) => {
-            console.log("user created");
-            response.status = parseInt(process.env.DATA_CREATE_SUCCESS);
-            response.message = createdUser.username;
-        })
-        .catch((error) => {
-            console.log("error saving user to db");
-            response.status = parseInt(process.env.INTERNAL_SERVER_ERROR);
-            response.message = error;
-        })
-        .finally(() => sendResponse(res, response));
+        .then((createdUser) => _userCreateSuccess(createdUser,res,response))
+        .catch((error) => dataReadWriteInternalError(error,res,response))
+        // .finally(() => sendResponse(res, response));
 }
+
+const _userCreateSuccess= function(createdUser, res,response){
+    console.log("user created");
+    response.status = parseInt(process.env.DATA_CREATE_SUCCESS);
+    response.message = createdUser.username;
+    sendResponse(res, response);
+}
+
 const login = function (req, res) {
     const response = {
         status: parseInt(process.env.OK),
@@ -86,7 +87,6 @@ const _validatePassword = function (foundUser, req, res, response) {
     if (!foundUser) {
         response.status = process.env.INVALID_USER_NAME_PASSWORD_STATUS;
         response.message = process.env.INVALID_USER_NAME_PASSWORD_MSG;
-
         sendResponse(res, response);
     }
     else {

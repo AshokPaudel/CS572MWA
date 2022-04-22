@@ -1,11 +1,12 @@
 import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { environment } from 'src/environments/environment';
+import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
+import { environment } from 'src/environments/environment';
 import { UserDataService } from '../user-data.service';
 import { AuthenticationService } from '../authentication.service';
-import { Router } from '@angular/router';
+
 
 export class Credentials{
   username!:string;
@@ -56,6 +57,7 @@ export class LoginComponent implements OnInit {
     console.log("Logging called");
     console.log(loginForm.value);
     console.log("Credentials : ", this.credentials);
+    if(loginForm.value.username&& loginForm.value.password){
     this.credentials=new Credentials(loginForm.value.username, loginForm.value.password);
 
     this.userDataService.login(this.credentials).subscribe({
@@ -69,9 +71,15 @@ export class LoginComponent implements OnInit {
         this.loginFlag=this.authenticateService.isLoggedIn;
         this.router.navigate(["/"]);
       },
-      error:err=>console.log(" Login failed ", err),
+      error:err=>{
+        console.log(" Login failed ", err);
+        window.alert("User Name and password must be valid");
+      },
       complete:()=>console.log(" Done"),
     })
+  }else{
+    // window.alert("User Name and password required");
+  }
 
   }
   logout(){

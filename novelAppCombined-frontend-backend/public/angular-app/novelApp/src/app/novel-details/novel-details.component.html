@@ -2,23 +2,25 @@
   <div class="row">
 <p> Novel Details</p>
 
-<ul *ngIf="novel">
-  <li>Title : {{novel.title}}</li>
-  <li>Number of Pages : {{novel.numberOfPages}}</li>
-  <li>Authors:</li>
+<ul *ngIf="novel" class="list-group" >
+  <li  class="list-group-item" >Title : {{novel.title}}</li>
+  <li  class="list-group-item" >Number of Pages : {{novel.numberOfPages}}</li>
+  <li  class="list-group-item" >Authors:</li>
   <div *ngFor="let author of novel.authors">
-    <ul>
-      <li>
-        {{ author.name}} , {{author.country}}
+    <ul class="list-group" >
+      <li class="list-group-item">
+        {{ author.name |titlecase}} , {{author.country|uppercase}}
       </li>
     </ul>
   </div>
 </ul>
 </div>
 <div class="btn-group">
-<button class="btn btn-warning" (click)="onDelete()">Delete Novel</button>
 
+<div *ngIf="loginFlag">
+<button class="btn btn-warning" (click)="onDelete()">Delete Novel</button>
 <button class="btn btn-primary" routerLink="/novelEdit/{{novelId}}">Edit Novel</button>
+</div>
 
 </div>
 </div>

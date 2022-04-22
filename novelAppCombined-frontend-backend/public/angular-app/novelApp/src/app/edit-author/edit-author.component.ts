@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
@@ -16,25 +16,23 @@ export class EditAuthorComponent implements OnInit {
    author!:Author;
   constructor(private activatedRoute: ActivatedRoute, private novelDataService: NovelsDataService,private router:Router) { }
 
+
   @ViewChild('authorEditForm')
   authorEditForm!: NgForm;
 
   ngOnInit(): void {
-     this.novelId = this.activatedRoute.snapshot.params["novelId"];
+    this.novelId = this.activatedRoute.snapshot.params["novelId"];
     this.authorId = this.activatedRoute.snapshot.params["authorId"];
     console.log("authorId is ", this.authorId);
     this.novelDataService.getAuthor(this.novelId,this.authorId).subscribe({
-      next:author=>this.author=author,
+      next:author=>this.authorEditForm.setValue(author),
       error:error=>console.log("Error fetching data ",error),
       complete:()=>console.log("Done")
 
     }
 
     )
-    // console.log("Current Novel is", this.novel);
-    // console.log("Current Author is ", this.novel.authors.filter(au => au._id == authorId)[0]);
-    // this.author = this.novel.authors.filter(au => au._id == authorId)[0];
-    setTimeout(()=>   this.authorEditForm.setValue(this.author),0)
+
   }
 
   public authorEdit(authorEditForm: NgForm) {

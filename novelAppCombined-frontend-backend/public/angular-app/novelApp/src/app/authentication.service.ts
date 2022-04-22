@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class AuthenticationService {
-  #isLoggedIn: boolean = false;
+  #isLoggedIn: boolean = (localStorage.getItem(environment.TOKEN_STORAGE_KEY))!=null;
   #username:string="";
 
   public saveToken(token:string):void{
@@ -39,4 +39,12 @@ export class AuthenticationService {
 
   constructor( private _jwtHelper:JwtHelperService) { }
 
+}
+export class Token{
+  #success!:boolean;
+  #token!:string;
+  set token(token:string){this.#token=token;}
+  get token():string{return this.token};
+  get success():boolean{return this.success};
+  set success(success:boolean){this.success=success};
 }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthenticationService } from '../authentication.service';
 import { NovelsDataService } from '../novels-data.service';
 
 
@@ -32,13 +33,15 @@ export class Author {
 export class NovelListComponent implements OnInit {
   novels: Novel[] = [];
   // novelSearch!:string;
+  loginFlag!:boolean;
 
-  constructor(private novelService: NovelsDataService) {
+  constructor(private novelService: NovelsDataService, private authenticateService:AuthenticationService) {
     // this.novelService=novelService;
   }
 
   ngOnInit(): void {
     console.log("I am at Init");
+    this.loginFlag=this.authenticateService.isLoggedIn;
     this.novelService.getNovels().subscribe({
       next: novels => this.novels = novels,
       error: err => console.log(err),

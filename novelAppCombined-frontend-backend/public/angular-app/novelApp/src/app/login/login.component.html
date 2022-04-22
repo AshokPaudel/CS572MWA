@@ -1,20 +1,17 @@
 <!-- {{loginFlag}} -->
 <div *ngIf="!loginFlag">
-  <form #loginForm=ngForm (ngSubmit)="login(loginForm)">
-  <div>
-    <label for="">username
-      <input type="text" name = "username" placeholder="user name" ngModel>
-    </label>
-    <label for="">password
-      <input type="password" name = "password" placeholder="password" ngModel>
-    </label>
-    <button type="submit">Login</button>
-  </div>
-
-</form>
+  <form ngNativeValidate #loginForm=ngForm (ngSubmit)="login(loginForm)" class="d-flex login" action="#" autocomplete="off">
+    <div id="login-info" class="d-flex login">
+        <label for="username" class="col-sm-2 col-form-label">User Name:</label>
+        <input required class="form-control me-2" type="text" name="username" placeholder="User Name" ngModel>
+        <label for="password" class="col-sm-2 col-form-label">Password:</label>
+        <input required class="form-control me-2" type="password" name="password" placeholder="Password" ngModel>
+        <button class="btn btn-outline-secondary" type="submit">Login</button>
+    </div>
+    </form>
 </div>
 
-<div *ngIf="loginFlag" >
-  <span >Welcome {{this.username}} !!!</span>
-  <button (click)="logout()">Logout</button>
+<div *ngIf="loginFlag">
+  <span class=" me-2">Welcome {{this.username |titlecase}} !!!</span>
+  <button class="btn btn-outline-danger" (click)="logout()">Logout</button>
 </div>

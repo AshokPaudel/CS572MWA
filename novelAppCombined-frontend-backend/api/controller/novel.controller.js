@@ -43,7 +43,7 @@ const getAll = function (req, res) {
 
 const _runNovelQuery = function(res,response,title,offset,count){
     const query = {
-        "title": {$regex: title}
+        "title": {$regex: title,$options:'i'}
     };
     Novel.find(query)
     .limit(count).then((data)=>_novelFindSuccess(data,res,response))
@@ -159,14 +159,15 @@ const _updateAndSave = function (novel, req, res, response) {
     novel.numberOfPages = req.body.numberOfPages;
     novel.authors = req.body.authors;
     novel.save()
-        .then((updatedNovel) => _novelUpdateSuccess(updatedNovel, response))
+        .then((updatedNovel) => novelUpdateSuccess(updatedNovel,res, response))
         .catch((error, response) => dataReadWriteInternalError(error, response))
-        .finally(() => sendResponse(res, response));
+        // .finally(() => sendResponse(res, response));
 }
-const _novelUpdateSuccess = function (updatedNovel, response) {
+const novelUpdateSuccess = function (updatedNovel, res, response) {
     console.log("Updated novel ", updatedNovel);
     response.message = updatedNovel;
     console.log("response message ", response.message);
+    sendResponse(res, response);
 }
 
 module.exports = {
@@ -176,5 +177,6 @@ module.exports = {
     deleteOne,
     updateOne,
     dataReadWriteInternalError: dataReadWriteInternalError,
-    sendResponse: sendResponse
+    sendResponse: sendResponse,
+    novelUpdateSuccess
 }

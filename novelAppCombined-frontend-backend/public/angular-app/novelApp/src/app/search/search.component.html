@@ -1,14 +1,19 @@
-<h3> Search Page </h3> <br/>
-
-<form #movieForm="ngForm">
-    search by novel title: <input type="text" class="form-control" id="title"
+<h3> Search Page </h3><hr><br>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-6">
+<form #novelForm="ngForm">
+    Search by novel title: <input type="text" class="form-control" id="title"
        required
        [(ngModel)]="title" name="title" /><br/>
-    <button (click)="search()">Search</button>
+    <button class="btn btn-primary" (click)="search()">Search</button>
 </form>
-
+</div>
+  </div>
+</div>
+<h4 *ngIf="isSearch">Search result for '{{title}}'</h4>
 <ul>
     <li *ngFor="let novel of novels">
-        <a routerLink="/novels/{{novel._id}}">{{novel.title}}</a>
+        <a routerLink="/novel/{{novel._id}}">{{novel.title}}</a>
     </li>
 </ul>
